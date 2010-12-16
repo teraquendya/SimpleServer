@@ -304,7 +304,7 @@ public class CommandParser {
 					String chat = msg.substring(tokens[0].length()); 
 					int numPlayers = server.localChat(parent,chat);
 					if (numPlayers<=0)
-						parent.addMessage("§cNobody is around to hear you.");
+						parent.addMessage("Â§cNobody is around to hear you.");
 				}
 				return true;
 			}
@@ -421,7 +421,14 @@ public class CommandParser {
 							id = Integer.valueOf(tokens[1]);
 						}
 						catch (Exception e) {
-							parent.addMessage("§cInvalid format!");
+                                                       if (simpleserver.Mappings.itemMap.containsKey(tokens[1])) {
+                                                               id = simpleserver.Mappings.itemMap.get(tokens[1]);
+                                                               server.adminLog.addMessage("Mapped " + tokens[1] + " to " + id);
+                                                       } else {
+								parent.addMessage("Â§cInvalid format!");
+								return true;
+                                                     }
+
 							return true;
 						}
 						server.adminLog.addMessage("User " + parent.getName() + " used give:\t " + id + "\t(" + amt + ")");
@@ -450,17 +457,17 @@ public class CommandParser {
 							group =Integer.valueOf(tokens[2]);
 						}
 						catch (Exception e) {
-							parent.addMessage("§cInvalid format!");
+							parent.addMessage("Â§cInvalid format!");
 							return true;
 						}
 						if (group>=parent.getGroup()) {
-							parent.addMessage("§cYou cannot promote a user to a higher group!");
+							parent.addMessage("Â§cYou cannot promote a user to a higher group!");
 							return true;
 						}
 						Player p = server.findPlayer(tokens[1]);
 						if (p!=null) {
 							if (parent.getGroup()<=p.getGroup()) {
-								parent.addMessage("§cYou cannot set the group of this user!");
+								parent.addMessage("Â§cYou cannot set the group of this user!");
 								return true;
 							}
 							server.members.setGroup( p.getName(), group);
@@ -471,7 +478,7 @@ public class CommandParser {
 						else {
 							String name=tokens[1];
 							if (parent.getGroup()<=server.members.checkName(name)) {
-								parent.addMessage("§cYou cannot set the group of this user!");
+								parent.addMessage("Â§cYou cannot set the group of this user!");
 								return true;
 							}
 							server.members.setGroup(name, group);
@@ -529,7 +536,7 @@ public class CommandParser {
 							id = Integer.valueOf(tokens[2]);
 						}
 						catch (Exception e) {
-							parent.addMessage("§cInvalid format!");
+							parent.addMessage("Â§cInvalid format!");
 							return true;
 						}
 						String name = server.findName(tokens[1]);
