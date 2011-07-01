@@ -18,18 +18,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class UnbanIPCommand extends AbstractCommand implements PlayerCommand {
+  public UnbanIPCommand() {
+    super("unbanip IPADDRESS", "Remove the IP address from the ban list");
+  }
 
-  public boolean isClosed();
+  public void execute(Player player, String message) {
+    String[] arguments = extractArguments(message);
 
-  public void close();
+    if (arguments.length >= 1) {
+      player.getServer().ipBans.removeBan(arguments[0]);
 
-  public void handle(Object o);
-
-  public String getName();
+      player.getServer().adminLog("User " + player.getName()
+                                      + " unbanned ip:\t " + arguments[0]);
+      player.addMessage("\u00a77IP Address " + arguments[0]
+          + " has been unbanned!");
+    }
+    else {
+      player.addMessage("\u00a7cNo IP specified.");
+    }
+  }
 }

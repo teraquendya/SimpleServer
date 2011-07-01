@@ -18,18 +18,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class UnwhitelistCommand extends PlayerArgCommand {
+  public UnwhitelistCommand() {
+    super("unwhitelist PLAYER", "Remove player from server access list");
+  }
 
-  public boolean isClosed();
+  @Override
+  protected void executeWithTarget(Player player, String message, String name) {
+    player.getServer().whitelist.removeName(name);
 
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+    player.getServer().adminLog("User " + player.getName()
+                                    + " unwhitelisted player:\t " + name);
+    player.addMessage("\u00a77Player " + name + " was un-whitelisted!");
+  }
 }

@@ -18,18 +18,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.log;
 
-public interface Rcon {
-  public void kick();
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
 
-  public boolean testTimeout();
+public class ErrorLog extends AbstractLog {
+  public ErrorLog() {
+    super("error");
+  }
 
-  public boolean isClosed();
+  public void addMessage(Exception exception, String message) {
+    CharArrayWriter charWriter = new CharArrayWriter();
+    PrintWriter writer = new PrintWriter(charWriter);
 
-  public void close();
+    writer.append(message);
+    if (exception != null) {
+      writer.append("\n");
+      exception.printStackTrace(writer);
+    }
 
-  public void handle(Object o);
+    super.addMessage(charWriter.toString());
 
-  public String getName();
+    writer.close();
+    charWriter.close();
+  }
 }

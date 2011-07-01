@@ -18,18 +18,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
+import simpleserver.Server;
 
-  public boolean testTimeout();
+public class BanCommand extends PlayerArgCommand {
+  public BanCommand() {
+    super("ban PLAYER [REASON]", "Kick and ban the named player");
+  }
 
-  public boolean isClosed();
+  @Override
+  protected void executeWithTarget(Player player, String message, String target) {
+    Server server = player.getServer();
+    String reason = extractArgument(message, 1);
+    if (reason == null) {
+      reason = "Banned by admin.";
+    }
 
-  public void close();
+    server.runCommand("ban", target);
+    server.kick(target, reason);
 
-  public void handle(Object o);
+    server.adminLog("User " + player.getName() + " banned player:\t " + target
+        + "\t(" + reason + ")");
+    server.runCommand("say", "Player " + target + " has been banned! ("
+        + reason + ")");
+  }
 
-  public String getName();
+  @Override
+  protected void noTargetSpecified(Player player, String message) {
+    player.addMessage("\u00a7cNo player or reason specified.");
+  }
 }

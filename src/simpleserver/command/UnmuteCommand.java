@@ -18,18 +18,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
+import simpleserver.Server;
 
-  public boolean testTimeout();
+public class UnmuteCommand extends PlayerArgCommand {
+  public UnmuteCommand() {
+    super("unmute PLAYER", "Allow the named player to use normal chat again");
+  }
 
-  public boolean isClosed();
+  @Override
+  protected void executeWithTarget(Player player, String message, String name) {
+    Server server = player.getServer();
+    server.mutelist.removeName(name);
 
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+    server.adminLog("Admin " + player.getName() + " unmuted player:\t " + name);
+    server.runCommand("say", "Player " + name + " has been unmuted!");
+  }
 }

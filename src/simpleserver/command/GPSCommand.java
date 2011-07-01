@@ -18,18 +18,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class GPSCommand extends OnlinePlayerArgCommand {
+  public GPSCommand() {
+    super("gps [PLAYER]",
+          "Display block coordinates of named player or yourself", true);
+  }
 
-  public boolean isClosed();
+  @Override
+  protected void executeWithTarget(Player player, String message, Player target) {
+    String name = "Your";
+    if (target == null) {
+      target = player;
+    }
+    else {
+      name = target.getName() + "'s";
+    }
 
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+    player.addMessage("\u00a77" + name + " Latitude: \u00a7f"
+        + (int) target.getX() + "\u00a77 Longitude: \u00a7f"
+        + (int) target.getZ() + "\u00a77 Altitude: \u00a7f"
+        + (int) target.getY());
+  }
 }

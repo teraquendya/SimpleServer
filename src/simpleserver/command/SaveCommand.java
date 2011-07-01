@@ -18,18 +18,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
+import simpleserver.Server;
 
-  public boolean testTimeout();
+public class SaveCommand extends AbstractCommand implements PlayerCommand,
+    ServerCommand {
+  public SaveCommand() {
+    super("save", "Store configuration to disk and force a map save");
+  }
 
-  public boolean isClosed();
+  @Override
+  public boolean shouldPassThroughToSMPAPI() {
+    return true;
+  }
 
-  public void close();
+  public void execute(Player player, String message) {
+    player.getServer().saveResources();
+    player.getServer().runCommand("save-all", null);
+    player.addMessage("\u00a77Resources Saved!");
+  }
 
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Server server, String message) {
+    server.saveResources();
+    server.runCommand("save-all", null);
+    System.out.println("Resources Saved!");
+  }
 }

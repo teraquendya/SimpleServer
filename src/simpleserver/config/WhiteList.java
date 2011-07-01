@@ -18,18 +18,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.config;
 
-public interface Rcon {
-  public void kick();
+import java.util.LinkedList;
+import java.util.List;
 
-  public boolean testTimeout();
+public class WhiteList extends PropertiesConfig {
+  public WhiteList() {
+    super("white-list.txt");
+  }
 
-  public boolean isClosed();
+  public boolean isWhitelisted(String name) {
+    return properties.getProperty(name.toLowerCase()) != null;
+  }
 
-  public void close();
+  public void addName(String name) {
+    if (properties.setProperty(name.toLowerCase(), "") == null) {
+      save();
+    }
+  }
 
-  public void handle(Object o);
+  public boolean removeName(String name) {
+    if (properties.remove(name.toLowerCase()) != null) {
+      save();
+      return true;
+    }
 
-  public String getName();
+    return false;
+  }
+
+  @Override
+  public void load() {
+    super.load();
+
+    List<String> names = new LinkedList<String>();
+    for (Object name : properties.keySet()) {
+      names.add(((String) name).toLowerCase());
+    }
+
+    properties.clear();
+    for (String name : names) {
+      properties.setProperty(name, "");
+    }
+  }
 }

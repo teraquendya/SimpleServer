@@ -18,18 +18,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Server;
 
-  public boolean testTimeout();
+public interface ServerCommand extends Command {
+  public boolean shouldPassThroughToConsole();
 
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Server server, String message);
 }

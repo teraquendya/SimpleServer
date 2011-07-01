@@ -18,18 +18,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.config;
 
-public interface Rcon {
-  public void kick();
+public class MOTD extends AsciiConfig {
+  private String motd;
 
-  public boolean testTimeout();
+  public MOTD() {
+    super("motd.txt");
+  }
 
-  public boolean isClosed();
+  public String getMOTD() {
+    return motd;
+  }
 
-  public void close();
+  public void setMOTD(String msg) {
+    motd = msg;
+  }
 
-  public void handle(Object o);
+  @Override
+  public void load() {
+    motd = "";
 
-  public String getName();
+    super.load();
+  }
+
+  @Override
+  protected void loadLine(String line) {
+    motd += line + "\n";
+  }
+
+  @Override
+  protected String saveString() {
+    return motd;
+  }
 }

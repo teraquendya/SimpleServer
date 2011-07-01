@@ -18,18 +18,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.minecraft;
 
-public interface Rcon {
-  public void kick();
+public interface Wrapper {
+  public void stop();
 
-  public boolean testTimeout();
-
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void join() throws InterruptedException;
 }

@@ -18,18 +18,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class MOTDCommand extends AbstractCommand implements PlayerCommand {
+  public MOTDCommand() {
+    super("motd", "Display the message of the day");
+  }
 
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Player player, String message) {
+    if (player.getServer().getMOTD().trim().length() > 0) {
+      player.sendMOTD();
+    }
+    else {
+      player.addMessage("\u00a7cMOTD is empty. Edit simpleserver/motd.txt");
+    }
+  }
 }

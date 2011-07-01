@@ -18,18 +18,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
+import simpleserver.Server;
 
-  public boolean testTimeout();
+public class RestartCommand extends AbstractCommand implements PlayerCommand,
+    ServerCommand {
+  public RestartCommand() {
+    super("restart", "Stop the minecraft server and start it again");
+  }
 
-  public boolean isClosed();
+  public void execute(Player player, String message) {
+    Server server = player.getServer();
 
-  public void close();
+    server.adminLog("User " + player.getName() + " attempted a restart!");
+    server.restart();
+  }
 
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Server server, String message) {
+    server.restart();
+  }
 }

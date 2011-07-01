@@ -18,18 +18,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.options;
 
-public interface Rcon {
-  public void kick();
-
-  public boolean testTimeout();
-
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+public class Language extends AbstractOptions {
+  public Language() {
+    super("language.properties");
+  }
 }

@@ -20,16 +20,8 @@
  */
 package simpleserver;
 
-public interface Rcon {
-  public void kick();
+public interface Resource {
+  public void load();
 
-  public boolean testTimeout();
-
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void save();
 }

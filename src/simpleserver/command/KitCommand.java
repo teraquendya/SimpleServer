@@ -18,18 +18,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class KitCommand extends AbstractCommand implements PlayerCommand {
+  public KitCommand() {
+    super("kit [KIT]", "Display all kits or give yourself the named kit");
+  }
 
-  public boolean isClosed();
+  public void execute(Player player, String message) {
+    String[] arguments = extractArguments(message);
 
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+    if (arguments.length > 0) {
+      if (!player.getServer().kits.giveKit(player, arguments[0])) {
+        player.addMessage("\u00a7cInvalid kit name.");
+      }
+    }
+    else {
+      player.getServer().kits.listKits(player);
+    }
+  }
 }

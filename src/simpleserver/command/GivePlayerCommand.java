@@ -18,18 +18,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class GivePlayerCommand extends GiveCommand {
+  public GivePlayerCommand() {
+    super("giveplayer PLAYER ITEM [AMOUNT]", "Spawn items for another player",
+          1);
+  }
 
-  public boolean isClosed();
+  @Override
+  protected Player getTarget(Player player, String[] arguments) {
+    Player target = null;
+    if (arguments.length > 0) {
+      target = player.getServer().findPlayer(arguments[0]);
+      if (target == null) {
+        player.addMessage("\u00a7cPlayer not online (" + arguments[0] + ")");
+      }
+    }
+    else {
+      player.addMessage("\u00a7cNo player or item specified!");
+    }
 
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+    return target;
+  }
 }

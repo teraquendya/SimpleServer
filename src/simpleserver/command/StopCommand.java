@@ -18,18 +18,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
+import simpleserver.Server;
 
-  public boolean testTimeout();
+public class StopCommand extends AbstractCommand implements PlayerCommand,
+    ServerCommand {
+  public StopCommand() {
+    super("stop", "Shutdown the entire server");
+  }
 
-  public boolean isClosed();
+  @Override
+  public boolean shouldPassThroughToConsole() {
+    return true;
+  }
 
-  public void close();
+  public void execute(Player player, String message) {
+    player.getServer().stop();
+  }
 
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Server server, String message) {
+    server.stop();
+  }
 }

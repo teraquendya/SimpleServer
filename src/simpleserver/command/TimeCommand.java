@@ -18,18 +18,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import java.util.Date;
 
-  public boolean testTimeout();
+import simpleserver.Player;
 
-  public boolean isClosed();
+public class TimeCommand extends AbstractCommand implements PlayerCommand {
 
-  public void close();
+  public TimeCommand() {
+    super("time", "Display the real-world time of the server");
+  }
 
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Player player, String message) {
+    player.addMessage(String.format("\u00a77Server time:\u00a7f %tc",
+                                    new Date()));
+  }
 }

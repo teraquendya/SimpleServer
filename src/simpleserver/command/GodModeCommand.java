@@ -18,18 +18,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class GodModeCommand extends AbstractCommand implements PlayerCommand {
+  public GodModeCommand() {
+    super("iddqd", "Make yourself invulnerable to other players attacks");
+  }
 
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Player player, String message) {
+    player.toggleGodMode();
+    if (player.godModeEnabled()) {
+      player.addMessage("\u00a77God-Mode Enabled!");
+    }
+    else {
+      player.addMessage("\u00a77God-Mode Disabled!");
+    }
+  }
 }

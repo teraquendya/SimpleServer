@@ -18,18 +18,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class TellCommand extends OnlinePlayerArgCommand implements
+    PlayerCommand {
 
-  public boolean isClosed();
+  public TellCommand() {
+    super("tell PLAYER MESSAGE...", "Send a message to the named player");
+  }
 
-  public void close();
+  @Override
+  protected void executeWithTarget(Player player, String message, Player target) {
+    String chat = extractArgument(message, 1);
+    if (chat != null) {
+      String formattedChat = "\u00a77" + player.getName() + " -> "
+          + target.getName() + ":\u00a7f " + chat;
+      player.addMessage(formattedChat);
+      target.addMessage(formattedChat);
+    }
+    else {
+      player.addMessage("\u00a7cPlease supply a message.");
+    }
+  }
 
-  public void handle(Object o);
-
-  public String getName();
+  @Override
+  protected void noTargetSpecified(Player player, String message) {
+    player.addMessage("\u00a7cNo player or message specified.");
+  }
 }

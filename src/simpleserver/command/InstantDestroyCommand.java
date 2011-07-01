@@ -18,18 +18,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class InstantDestroyCommand extends AbstractCommand implements
+    PlayerCommand {
+  public InstantDestroyCommand() {
+    super("idbehold", "Make tools work instantly for yourself");
+  }
 
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Player player, String message) {
+    player.toggleInstantDestroy();
+    if (player.instantDestroyEnabled()) {
+      player.addMessage("\u00a77Instant destroy Enabled!");
+    }
+    else {
+      player.addMessage("\u00a77Instant destroy Disabled!");
+    }
+  }
 }

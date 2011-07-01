@@ -18,18 +18,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
+import simpleserver.Server;
 
-  public boolean testTimeout();
+public class ReloadCommand extends AbstractCommand implements PlayerCommand,
+    ServerCommand {
+  public ReloadCommand() {
+    super("reload", "Reread the configuration files from disk");
+  }
 
-  public boolean isClosed();
+  @Override
+  public boolean shouldPassThroughToSMPAPI() {
+    return true;
+  }
 
-  public void close();
+  public void execute(Player player, String message) {
+    player.getServer().loadResources();
+    player.addMessage("\u00a77Resources Reloaded!");
+  }
 
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Server server, String message) {
+    server.loadResources();
+    System.out.println("Resources Reloaded!");
+  }
 }

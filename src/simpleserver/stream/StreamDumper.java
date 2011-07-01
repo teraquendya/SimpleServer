@@ -18,18 +18,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.stream;
 
-public interface Rcon {
-  public void kick();
+import java.io.IOException;
 
-  public boolean testTimeout();
+public interface StreamDumper {
+  public void cleanup();
 
-  public boolean isClosed();
+  public void packetFinished() throws IOException;
 
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void flush() throws IOException;
 }

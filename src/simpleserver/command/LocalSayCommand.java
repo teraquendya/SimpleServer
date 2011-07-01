@@ -18,18 +18,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class LocalSayCommand extends AbstractCommand implements PlayerCommand {
+  public LocalSayCommand() {
+    super("local MESSAGE", "Send a chat message to nearby players");
+  }
 
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Player player, String message) {
+    String chat = extractArgument(message);
+    if (chat != null) {
+      int numPlayers = player.getServer().localChat(player, chat);
+      if (numPlayers <= 0) {
+        player.addMessage("\u00a7cNobody is around to hear you.");
+      }
+    }
+    else {
+      player.addMessage("\u00a7cPlease supply a message.");
+    }
+  }
 }

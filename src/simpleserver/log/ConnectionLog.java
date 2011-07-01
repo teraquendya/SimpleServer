@@ -18,18 +18,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.log;
 
-public interface Rcon {
-  public void kick();
+import java.net.Socket;
 
-  public boolean testTimeout();
+public class ConnectionLog extends AbstractLog {
+  public ConnectionLog() {
+    super("connection");
+  }
 
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void addMessage(String type, Socket socket, String comments) {
+    String local = socket.getLocalAddress().getHostAddress() + ":"
+        + socket.getLocalPort();
+    String remote = socket.getInetAddress().getHostAddress() + ":"
+        + socket.getPort();
+    super.addMessage(type + "\t" + local + "\t" + remote + "\t" + comments);
+  }
 }

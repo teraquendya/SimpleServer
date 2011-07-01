@@ -18,18 +18,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
+import simpleserver.Server;
 
-  public boolean testTimeout();
+public class PlayerListCommand extends AbstractCommand implements PlayerCommand {
+  public PlayerListCommand() {
+    super("who", "Display online players names");
+  }
 
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Player player, String message) {
+    Server server = player.getServer();
+    String list = "\u00a77Connected Players (" + server.numPlayers()
+        + "):\u00a7f ";
+    for (Player friend : server.playerList.getArray()) {
+      list += friend.getName() + ", ";
+    }
+    player.addMessage(list);
+  }
 }

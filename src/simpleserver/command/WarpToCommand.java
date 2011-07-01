@@ -18,18 +18,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class WarpToCommand extends OnlinePlayerArgCommand {
+  public WarpToCommand() {
+    super("warpmeto PLAYER", "Teleport to the named player");
+  }
 
-  public boolean isClosed();
+  @Override
+  protected void executeWithTarget(Player player, String message, Player target) {
+    player.teleportTo(target);
 
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+    player.getServer().adminLog("Admin " + player.getName() + " teleported:\t "
+                                    + player.getName() + "\tto\t"
+                                    + target.getName());
+  }
 }

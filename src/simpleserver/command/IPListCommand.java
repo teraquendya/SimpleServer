@@ -18,18 +18,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
+import simpleserver.Server;
 
-  public boolean testTimeout();
+public class IPListCommand extends AbstractCommand implements PlayerCommand,
+    ServerCommand {
+  public IPListCommand() {
+    super("listips", "Display the name and IP of each connected player");
+  }
 
-  public boolean isClosed();
+  public void execute(Player player, String message) {
+    player.addMessage("\u00a77IP Addresses:");
+    for (Player friend : player.getServer().playerList.getArray()) {
+      player.addMessage(friend.getName() + " " + friend.getIPAddress());
+    }
+  }
 
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Server server, String message) {
+    System.out.println("IP Addresses:");
+    for (Player friend : server.playerList.getArray()) {
+      System.out.println(friend.getName() + " " + friend.getIPAddress());
+    }
+  }
 }

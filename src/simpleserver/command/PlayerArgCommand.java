@@ -18,18 +18,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public abstract class PlayerArgCommand extends AbstractCommand implements
+    PlayerCommand {
+  protected PlayerArgCommand(String name, String helpText) {
+    super(name, helpText
+        + " (case-insensitive, name prefix works for online players)");
+  }
 
-  public boolean isClosed();
+  public void execute(Player player, String message) {
+    String[] arguments = extractArguments(message);
 
-  public void close();
+    if (arguments.length > 0) {
+      String name = player.getServer().findName(arguments[0]);
+      if (name == null) {
+        name = arguments[0];
+      }
 
-  public void handle(Object o);
+      executeWithTarget(player, message, name);
+    }
+    else {
+      noTargetSpecified(player, message);
+    }
+  }
 
-  public String getName();
+  protected abstract void executeWithTarget(Player player, String message,
+                                            String target);
+
+  protected void noTargetSpecified(Player player, String message) {
+    player.addMessage("\u00a7cNo player specified.");
+  }
 }

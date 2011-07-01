@@ -18,18 +18,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.config;
 
-public interface Rcon {
-  public void kick();
+public class Rules extends AsciiConfig {
+  private String rules;
 
-  public boolean testTimeout();
+  public Rules() {
+    super("rules.txt");
+  }
 
-  public boolean isClosed();
+  public String getRules() {
+    return rules;
+  }
 
-  public void close();
+  public void setRules(String msg) {
+    rules = msg;
+  }
 
-  public void handle(Object o);
+  @Override
+  public void load() {
+    rules = "";
 
-  public String getName();
+    super.load();
+  }
+
+  @Override
+  protected void loadLine(String line) {
+    rules += line + "\n";
+  }
+
+  @Override
+  protected String saveString() {
+    return rules;
+  }
 }

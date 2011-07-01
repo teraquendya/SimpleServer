@@ -18,18 +18,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class RconCommand extends AbstractCommand implements PlayerCommand {
+  public RconCommand() {
+    super("rcon COMMAND ARGUMENTS...",
+          "Execute a command on the server console");
+  }
 
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Player player, String message) {
+    String[] arguments = extractArguments(message);
+    String commandArguments = extractArgument(message, 1);
+    if (arguments.length > 0) {
+      player.getServer().runCommand(arguments[0], commandArguments);
+    }
+    else {
+      player.addMessage("\u00a7cNo rcon command specified.");
+    }
+  }
 }

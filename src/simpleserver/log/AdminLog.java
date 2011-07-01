@@ -18,18 +18,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.log;
 
-public interface Rcon {
-  public void kick();
+public class AdminLog extends AbstractLog {
+  public AdminLog() {
+    super("admin");
+  }
 
-  public boolean testTimeout();
-
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  @Override
+  public void addMessage(String message) {
+    super.addMessage(message);
+  }
 }

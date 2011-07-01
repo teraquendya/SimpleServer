@@ -18,18 +18,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class UnlockCommand extends AbstractCommand implements PlayerCommand {
+  public UnlockCommand() {
+    super("unlock",
+          "Unlock your locked chest (if you have one) for others to access");
+  }
 
-  public boolean isClosed();
-
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Player player, String message) {
+    player.getServer().chests.releaseLock(player.getName().toLowerCase());
+    player.addMessage("\u00a77Your lock has been released!");
+  }
 }

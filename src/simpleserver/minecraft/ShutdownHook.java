@@ -18,18 +18,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.minecraft;
 
-public interface Rcon {
-  public void kick();
+public class ShutdownHook implements Wrapper {
+  private final MinecraftWrapper minecraft;
+  private final Hook hook;
 
-  public boolean testTimeout();
+  public ShutdownHook(MinecraftWrapper minecraft) {
+    this.minecraft = minecraft;
 
-  public boolean isClosed();
+    hook = new Hook();
+    Runtime.getRuntime().addShutdownHook(hook);
+  }
 
-  public void close();
+  public void stop() {
+    Runtime.getRuntime().removeShutdownHook(hook);
+  }
 
-  public void handle(Object o);
+  public void join() {
+  }
 
-  public String getName();
+  private final class Hook extends Thread {
+    @Override
+    public void run() {
+      System.out.println("Shutdown Hook Activated");
+      minecraft.execute("stop", null);
+    }
+  }
 }

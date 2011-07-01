@@ -18,18 +18,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
+import simpleserver.Server;
 
-  public boolean testTimeout();
+public class InvalidCommand extends AbstractCommand implements PlayerCommand,
+    ServerCommand {
+  public InvalidCommand() {
+    super(null, "\u00a7cNo such command!");
+  }
 
-  public boolean isClosed();
+  @Override
+  public boolean isHidden() {
+    return true;
+  }
 
-  public void close();
+  public void execute(Player player, String message) {
+    player.addMessage("\u00a7cNo such command " + message);
+  }
 
-  public void handle(Object o);
-
-  public String getName();
+  public void execute(Server server, String message) {
+    System.out.println("No such command " + message);
+  }
 }

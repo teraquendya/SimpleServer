@@ -18,18 +18,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class KickCommand extends OnlinePlayerArgCommand {
+  public KickCommand() {
+    super("kick PLAYER [REASON]", "Kick the named player from the server");
+  }
 
-  public boolean isClosed();
+  @Override
+  protected void executeWithTarget(Player player, String message, Player target) {
+    String reason = extractArgument(message, 1);
+    if (reason == null) {
+      reason = "Kicked by admin.";
+    }
 
-  public void close();
+    target.kick(reason);
+    player.getServer().adminLog("Admin " + player.getName()
+                                    + " kicked player:\t " + target.getName()
+                                    + "\t(" + reason + ")");
+    player.getServer().runCommand("say",
+                                  "Player " + target.getName()
+                                      + " has been kicked! (" + reason + ")");
+  }
 
-  public void handle(Object o);
-
-  public String getName();
+  @Override
+  protected void noTargetSpecified(Player player, String message) {
+    player.addMessage("\u00a7cNo player or reason specified.");
+  }
 }

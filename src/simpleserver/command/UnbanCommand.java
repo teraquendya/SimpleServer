@@ -18,18 +18,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package simpleserver;
+package simpleserver.command;
 
-public interface Rcon {
-  public void kick();
+import simpleserver.Player;
 
-  public boolean testTimeout();
+public class UnbanCommand extends PlayerArgCommand {
+  public UnbanCommand() {
+    super("unban PLAYER", "Remove the named player from the ban list");
+  }
 
-  public boolean isClosed();
+  @Override
+  protected void executeWithTarget(Player player, String message, String name) {
+    player.getServer().runCommand("pardon", name);
 
-  public void close();
-
-  public void handle(Object o);
-
-  public String getName();
+    player.getServer().adminLog("User " + player.getName()
+                                    + " unbanned player:\t " + name);
+    player.addMessage("\u00a77Unbanned " + name + "!");
+  }
 }
