@@ -31,36 +31,23 @@ lastline='''        }
 '''
 
 
-map = dict()
+map = list()
 
-url='http://www.minecraftwiki.net/wiki/Data_values'
+url='http://minecraft-ids.grahamedgecombe.com/'
 
 html = urllib2.urlopen(url).read()
 soup = BeautifulSoup(html)
 
-for table in soup.findAll('table'):
-	h2 = table.findPrevious('h2')
-	if h2 is None:
-		continue
-	title = h2.text
-	if title != u'Item IDs' and title != u'Block IDs (Minecraft Beta)':
-		continue
-	for row in table.findAll('tr')[1:]:
-		#if row.find('td') is None:
-		#	continue
-		_,two,_,four = row.findAll('td')
-		value = int(two.text)
-		try:
-			four.find('sup').extract()
-		except:
-			pass
-		key = four.text.replace(' ','_').lower()
-		map[key] = value
+table = soup.find('table',id='items')
+for row in table.findAll('tr'):
+	value = row.find('td',{'class':'id'}).text
+	key = row.find('td',{'class':'name'}).text.lower().replace(' ','_')
+	map.append((key,value))
 		
 ret = []
 ret.append(firstline)
-for key,value in sorted(map.iteritems(), key=operator.itemgetter(1)):  #map.iteritems()
-	ret.append('%s%s%s%s%s' % (pre,key,sep,value,post))
+for item in map:
+	ret.append('%s%s%s%s%s' % (pre,item[0],sep,item[1],post))
 ret.append(lastline)
 
 if filename:
