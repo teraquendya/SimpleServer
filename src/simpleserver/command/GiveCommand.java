@@ -45,9 +45,12 @@ public class GiveCommand extends AbstractCommand implements PlayerCommand {
 
     if (arguments.length > offset) {
       String item = arguments[offset];
-      Integer id = player.getServer().giveAliasList.getItemId(item);
+      String id = player.getServer().giveAliasList.getItemId(item);
       if (id != null) {
-        item = id.toString();
+        item = id;
+      }
+      if (item.contains(":") && !player.getServer().options.get("alternateJarFile").equals("")) {
+        player.addMessage("\u00a7cVanilla minecraft does not support specifying the secondary data field.");
       }
 
       String amount = null;

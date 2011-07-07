@@ -28,17 +28,17 @@ public class GiveAliasList extends PropertiesConfig {
   private static final String[] suffixes = new String[] { "s", "block",
       "blocks", "ore", "ores", "es" };
 
-  private final Map<String, Integer> aliases;
+  private final Map<String, String> aliases;
 
   public GiveAliasList() {
     super("give-alias-list.txt");
 
-    aliases = new HashMap<String, Integer>();
+    aliases = new HashMap<String, String>();
   }
 
-  public Integer getItemId(String itemAlias) {
+  public String getItemId(String itemAlias) {
     itemAlias = itemAlias.toLowerCase();
-    Integer itemId = aliases.get(itemAlias);
+    String itemId = aliases.get(itemAlias);
 
     for (String suffix : suffixes) {
       if (itemId != null) {
@@ -60,9 +60,9 @@ public class GiveAliasList extends PropertiesConfig {
 
     aliases.clear();
     for (Entry<Object, Object> alias : properties.entrySet()) {
-      Integer id;
+      String id;
       try {
-        id = Integer.valueOf((String) alias.getValue());
+        id = (String)alias.getValue();
       }
       catch (NumberFormatException e) {
         System.out.println("Invalid give alias: " + alias.toString());

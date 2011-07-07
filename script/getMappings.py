@@ -13,22 +13,11 @@ if len(sys.argv) != 1:
 		exit(0)
 	
 
-firstline='''package simpleserver;
-
-import java.util.Map;
-
-public class Mappings {
-	public static final Map<String, Integer> itemMap = new TreeMap<String, Integer>(){
-        {
-'''
-pre = '''			put("'''
-sep = '''", '''
-post = ''' );
-'''
-lastline='''        }
-    };
-}
-'''
+firstline=''
+pre = ''
+sep = '''='''
+post = '\n'
+lastline=''
 
 
 map = list()
